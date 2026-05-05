@@ -1,5 +1,6 @@
 FROM php:8.4-apache
 
+# Все нужные библиотеки включая libpq-dev и libsqlite3-dev
 RUN apt-get update && apt-get install -y \
     git curl zip unzip libzip-dev libpng-dev libonig-dev libxml2-dev libpq-dev libsqlite3-dev \
     && docker-php-ext-install pdo pdo_mysql pdo_pgsql pdo_sqlite mbstring zip exif pcntl
@@ -10,13 +11,13 @@ WORKDIR /var/www/html
 
 COPY . .
 
-# Создаём .env до composer install
+# .env и sqlite файл нужны ДО composer install
 RUN cp .env.example .env
+RUN touch database/database.sqlite
 
-RUN composer install --optimize-autoloader --no-dev
+RUN composer install --optimize-autoloader --no-dev --no-scripts
 
 RUN php artisan key:generate --force
-
 RUN php artisan storage:link
 
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
