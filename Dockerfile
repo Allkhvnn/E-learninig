@@ -10,9 +10,12 @@ WORKDIR /var/www/html
 
 COPY . .
 
+# Создаём .env до composer install
+RUN cp .env.example .env
+
 RUN composer install --optimize-autoloader --no-dev
 
-RUN php artisan key:generate --no-interaction
+RUN php artisan key:generate --force
 
 RUN php artisan storage:link
 
