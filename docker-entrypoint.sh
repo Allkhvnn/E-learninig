@@ -1,12 +1,11 @@
 #!/bin/bash
 set -e
 
-# Перезаписываем .env переменными из Render
 cat > /var/www/html/.env << EOF
 APP_NAME=Laravel
 APP_ENV=production
 APP_KEY=${APP_KEY}
-APP_DEBUG=false
+APP_DEBUG=true
 APP_URL=${APP_URL}
 
 DB_CONNECTION=pgsql
@@ -32,5 +31,6 @@ EOF
 
 php artisan config:clear
 php artisan migrate --force
+php artisan db:seed --force 2>/dev/null || true
 
 apache2-foreground
