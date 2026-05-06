@@ -31,6 +31,7 @@ EOF
 
 php artisan config:clear
 php artisan migrate --force
-php artisan db:seed --force
+php artisan db:seed --class=RolePermissionSeeder --force
+php artisan db:seed --class=UserSeeder --force
 
 apache2-foreground
