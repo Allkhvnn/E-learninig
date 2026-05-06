@@ -1,7 +1,35 @@
 #!/bin/bash
 set -e
 
-# Записываем переменные из Render в .env
+# Перезаписываем .env переменными из Render
+cat > /var/www/html/.env << EOF
+APP_NAME=Laravel
+APP_ENV=production
+APP_KEY=${APP_KEY}
+APP_DEBUG=false
+APP_URL=${APP_URL}
+
+DB_CONNECTION=pgsql
+DB_HOST=${DB_HOST}
+DB_PORT=${DB_PORT}
+DB_DATABASE=${DB_DATABASE}
+DB_USERNAME=${DB_USERNAME}
+DB_PASSWORD=${DB_PASSWORD}
+
+SESSION_DRIVER=database
+CACHE_STORE=database
+QUEUE_CONNECTION=database
+
+MAIL_MAILER=smtp
+MAIL_HOST=${MAIL_HOST}
+MAIL_PORT=${MAIL_PORT}
+MAIL_USERNAME=${MAIL_USERNAME}
+MAIL_PASSWORD=${MAIL_PASSWORD}
+MAIL_ENCRYPTION=${MAIL_ENCRYPTION}
+MAIL_FROM_ADDRESS=${MAIL_FROM_ADDRESS}
+MAIL_FROM_NAME="${MAIL_FROM_NAME}"
+EOF
+
 php artisan config:clear
 php artisan migrate --force
 
